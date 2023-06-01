@@ -1,0 +1,54 @@
+<h3 class="text-center mt-4">Ticket</h3>
+<div class="container mt-3">
+    <form #ticketFormulario="ngForm">
+        <div class="mb-3">
+            <label class="form-label">DNI</label>
+            <input type="text" class="form-control" name="dni" [(ngModel)]="ticket.dni" required #dni="ngModel"
+                minlength="8">
+        </div>
+        <div *ngIf="dni.invalid && (dni.dirty || dni.touched )" class="alert alert-danger">
+            <div *ngIf="dni.errors?.['required']">
+                El DNI es requerido.
+            </div>
+            <div *ngIf="dni.errors?.['minlength']">
+                El DNI debe tener 8 caracteres.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Precio Real</label>
+            <input type="number" class="form-control" name="precio" [(ngModel)]="ticket.precioReal"
+                (ngModelChange)="calcularPrecioCobrado()" required #precio="ngModel">
+        </div>
+        <div *ngIf="precio.invalid && (precio.dirty || precio.touched )" class="alert alert-danger">
+            <div *ngIf="precio.errors?.['required']">
+                El precio es requerido.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Tipo de Espectador</label>
+            <select class="form-select" name="tipoEspectador" [(ngModel)]="ticket.tipoEspectador"
+                (ngModelChange)="calcularPrecioCobrado()" required #espectador = "ngModel">
+                <option value="local">Local</option>
+                <option value="extranjero">Extranjero</option>
+            </select>
+        </div>
+        <div *ngIf="espectador.invalid && espectador.touched" class="alert alert-danger">
+            <div *ngIf="espectador.errors?.['required']">
+                Debe elegir una opcion.
+            </div>
+        </div>
+        <div class="mb-3"
+            *ngIf="ticket.precioReal!=null&&(ticket.tipoEspectador=='local' || ticket.tipoEspectador=='extranjero')">
+            <label>Precio</label>
+            ${{ticket.precioCobrado}}
+        </div>
+        <div *ngIf="accion=='new'">
+            <button class="btn btn-primary rounded-0" (click)="guardarTicket(ticket)" routerLink="/tickets"
+                [disabled]="ticketFormulario.invalid">Guardar</button>
+            <a class="btn btn-dark rounded-0 ms-2" routerLink="/tickets">Volver</a>
+        </div>
+        <button class="btn btn-primary rounded-0" *ngIf="accion=='update'" routerLink="/tickets" [disabled]="ticketFormulario.invalid">Modificar</button>
+
+    </form>
+</div>

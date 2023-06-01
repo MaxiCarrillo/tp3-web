@@ -1,0 +1,79 @@
+<div class="container mt-3" *ngIf="tickets.length!=0">
+    <h3 class="text-center">Tickets Vendidos</h3>
+    <div class="text-end mb-3">
+        <button class="btn btn-outline-primary rounded-0 " (click)="venderTicket()">Vender</button>
+    </div>
+    <table class="table table-hover text-center">
+        <thead>
+            <tr>
+                <th scope="col">Nro</th>
+                <th scope="col">Tipo de Espectador</th>
+                <th scope="col">DNI</th>
+                <th scope="col">Fecha de Cobro</th>
+                <th scope="col">Precio</th>
+                <th colspan="2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ticket of tickets">
+                <th scope="row">{{ticket.nroTicket}}</th>
+                <td>{{ticket.tipoEspectador | titlecase}}</td>
+                <td>{{ticket.dni}}</td>
+                <td>{{ticket.fechaCobro | date: 'dd/MM/yyyy'}}</td>
+                <td>${{ticket.precioCobrado}}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm rounded-0" (click)="modificarTicket(ticket.nroTicket)">
+                        Modificar
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm rounded-0" (click)="eliminarTicket(ticket.nroTicket)">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="mt-3">
+        <hr class="border border-danger border-2 opacity-100">
+        <select class="form-select form-select-sm w-25" name="tipoEspectador" [(ngModel)]="tipo"
+            (ngModelChange)="getResumenOfTickets()">
+            <option value="local">Local</option>
+            <option value="extranjero">Extranjero</option>
+        </select>
+        <div *ngIf="ticketsResumen.length!=0">
+            <table class="table table-hover text-center mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">Nro</th>
+                        <th scope="col">DNI</th>
+                        <th scope="col">Fecha de Cobro</th>
+                        <th scope="col">Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ticket of ticketsResumen">
+                        <th>{{ticket.nroTicket}}</th>
+                        <td>{{ticket.dni}}</td>
+                        <td>{{ticket.fechaCobro | date: 'dd/MM/yyyy'}}</td>
+                        <td>${{ticket.precioCobrado}}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="4">Total: ${{getTotalOfResumen()}}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="ticketsResumen.length==0 && tipo!=''" class="text-center">
+            <h5 class="text-cemter mt-2">No hay tickets vendidos.</h5>
+        </div>
+        <div *ngIf="tipo==''" class="text-center">
+            <h5 class="text-cemter mt-2">Elija una opcion.</h5>
+        </div>
+    </div>
+
+</div>
+<div class="container mt-3 text-center" *ngIf="tickets.length==0">
+    <h3>No hay tickets vendidos</h3>
+    <button class="btn btn-outline-primary rounded-0" (click)="venderTicket()">Vender</button>
+</div>

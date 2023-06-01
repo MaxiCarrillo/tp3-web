@@ -1,0 +1,72 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-warning text-end position-fixed mt-5 z-3 rounded-0 rounded-end-2"
+    data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <i class="bi bi-cart"></i>
+</button>
+<div class="container mt-3">
+    <h3 class="text-center">Productos Destacados</h3>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let producto of productos">
+            <div class="card h-100">
+                <h6 class="card-text text-end mt-1 me-2">{{producto.precio | currency:'$':true:'1.0-2'}}</h6>
+                <img src="../../../assets/{{ producto.img}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{producto.nombre}}</h5>
+                    <p class="card-text">{{producto.descripcion}}</p>
+                    <a class="btn btn-outline-dark" (click)="agregarAlCarrito(producto)">Agregar al Carrito</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Carrito de Compras<i class="bi bi-cart ms-1"></i>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12" *ngFor="let producto of productosCarrito">
+                            <div class="card mb-3" style="max-width: 540px;">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="../../../assets/{{ producto.img}}" class="img-fluid rounded-start"
+                                            alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ producto.nombre }}</h5>
+                                            <p class="card-text">{{ producto.descripcion }}</p>
+                                            <div>
+                                                <span class="card-text text-body-secondary me-5">{{producto.precio | currency:'$':true:'1.0-2'}}</span>
+                                                <button class="btn btn-sm btn-outline-danger" (click)="quitarDelCarrito(producto)">-</button>
+                                                <span class="me-1 ms-1">{{producto.cantidad}}</span>
+                                                <button class="btn btn-sm btn-outline-primary" (click)="agregarAlCarrito(producto)">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p>Total: <b>{{totalCarrito | currency:'$':true:'1.0-2'}} </b></p>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Comprar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="node_modules/bootstrap-icons/font/bootstrap-icons.json"></script>
